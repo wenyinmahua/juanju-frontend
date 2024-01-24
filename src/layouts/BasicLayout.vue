@@ -1,16 +1,23 @@
 <script setup>
 import { showToast } from 'vant';
-import { ref } from "vue";
-const active = ref("index");
-const onChange = (index) => showToast(`标签 ${index}`);
-const onClickLeft = () =>alert("左")
-const onClickRight = () => alert("右");
-// import 'vant/es/notify/style'
 import 'vant/es/toast/style'
+import {useRouter} from "vue-router";
+// import { ref } from "vue";
+// const active = ref("index");
+const onChange = (index) => showToast(`标签 ${index}`);
+const router = useRouter()
+const onClickLeft = () => {
+  router.push('/')
+}
+const onClickRight = () => {
+  router.push('/search')
+};
+// import 'vant/es/notify/style'
 
-import Index from "../pages/Index.vue";
-import User from "../pages/User.vue";
-import Team from "../pages/Team.vue";
+
+// import Index from "../pages/IndexPage.vue";
+// import User from "../pages/UserPage.vue";
+// import Team from "../pages/TeamPage.vue";
 </script>
 
 <template>
@@ -27,22 +34,24 @@ import Team from "../pages/Team.vue";
   </van-nav-bar>
 
   <div id="content">
-    <template v-if="active === 'index'">
-      <Index/>
-    </template>
-    <template v-if="active === 'team'">
-      <Team/>
-    </template>
-    <template v-if="active === 'user'">
-      <User/>
-    </template>
+    <router-view />
+<!--    <template v-if="active === 'index'">-->
+<!--      <Index/>-->
+<!--    </template>-->
+<!--    <template v-if="active === 'team'">-->
+<!--      <Team/>-->
+<!--    </template>-->
+<!--    <template v-if="active === 'user'">-->
+<!--      <User/>-->
+<!--    </template>-->
   </div>
 
 
-  <van-tabbar v-model="active" @change="onChange">
-    <van-tabbar-item icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item icon="search" name="team">队伍</van-tabbar-item>
-    <van-tabbar-item icon="friends-o" name="user">个人</van-tabbar-item>
+<!--  <van-tabbar v-model="active" @change="onChange" route>-->
+  <van-tabbar  @change="onChange" route>
+    <van-tabbar-item icon="home-o" to="/" name="index">主页</van-tabbar-item>
+    <van-tabbar-item icon="search" to="/team" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item icon="friends-o" to="/user" name="user">个人</van-tabbar-item>
   </van-tabbar>
 </template>
 
