@@ -7,7 +7,7 @@ import {useRouter} from "vue-router";
 const onChange = (index) => showToast(`标签 ${index}`);
 const router = useRouter()
 const onClickLeft = () => {
-  router.push('/')
+  router.back()
 }
 const onClickRight = () => {
   router.push('/search')

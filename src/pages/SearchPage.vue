@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { showToast } from 'vant';
 import {useRouter} from "vue-router";
 const router = useRouter()
 const searchText = ref('');
@@ -45,7 +44,17 @@ const originList = [
   },
 ]
 const tagList = ref(originList)
-
+/**
+ * 执行搜索
+ */
+const toSearchResult = () => {
+  router.push({
+    path: '/user/list',
+    query: {
+      tags: activeIds.value
+    }
+  })
+}
 </script>
 
 <template>
@@ -71,6 +80,9 @@ const tagList = ref(originList)
       v-model:main-active-index="activeIndex"
       :items="tagList"
   />
+  <div style="padding: 12px">
+    <van-button block type="primary" @click="toSearchResult()" >搜索</van-button>
+  </div>
 </template>
 
 <style scoped>
