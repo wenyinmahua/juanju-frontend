@@ -1,17 +1,27 @@
 <script setup>
 
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
-
+import request from "/src/plugins/myAxios.js";
+import {showFailToast, showSuccessToast} from "vant";
+const router = useRouter();
 const route = useRoute();
 const editUser = ref({
   editKey: route.query.editKey,
   currentValue: route.query.currentValue,
   editName: route.query.editName,
 })
-const onSubmit = (values) => {
-  // todo 把editKey\editName\currentValue 提交到后台处理
+const onSubmit = async(values) => {
+  const res = await request.post("/user/update",{
 
+    [editUser.value.editKey] : editUser.value.currentValue,
+  })
+  if(res.code == 0 && res.data > 0){
+    showSuccessToast("修改成功")
+    router.back();
+  }else {
+    showFailToast("修改失败")
+  }
 };
 
 </script>

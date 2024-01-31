@@ -42,9 +42,9 @@ onMounted(async () => {
 </script>
 
 <template>
+
   <van-card
       v-for="user in userList"
-
       :desc="`${user.profile}`"
       :title="`${user.username}(${user.stuId})`"
       :thumb='user.avatarUrl'
@@ -59,6 +59,8 @@ onMounted(async () => {
     </template>
   </van-card>
   <van-empty v-if="!userList || userList.length < 1" image="search" description="搜索结果为空" />
+  <van-back-top immediate />
+  <div style="height: 60px;"></div>
 </template>
 
 <style scoped>

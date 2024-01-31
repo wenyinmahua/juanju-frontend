@@ -13,8 +13,6 @@ const onClickRight = () => {
   router.push('/search')
 };
 // import 'vant/es/notify/style'
-
-
 // import Index from "../pages/IndexPage.vue";
 // import User from "../pages/UserPage.vue";
 // import Team from "../pages/TeamPage.vue";

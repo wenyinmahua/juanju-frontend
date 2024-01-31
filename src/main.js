@@ -4,7 +4,8 @@ import { Button, NavBar, Icon, Tabbar, TabbarItem } from 'vant';
 import { Space } from 'vant';
 import router from './router'
 import { Cell, CellGroup } from 'vant';
-import { Form, Field, Card, Toast, Empty } from 'vant';
+import { Form, Field, Card, Toast, Empty, BackTop } from 'vant';
+import Vant from 'vant';
 
 const app = createApp(App)
 app.use(Button)
@@ -21,6 +22,8 @@ app.use(Field)
 app.use(Card)
 app.use(Toast)
 app.use(Empty)
+app.use(BackTop)
+app.use(Vant)
 app.mount('#app')
 
 
