@@ -19,11 +19,9 @@ onMounted(async () => {
     }
   }).then(function (response){
     console.log('/user/search/tags succeed',response)
-    showSuccessToast("请求成功")
-    return response.data.data;
+    return response.data;
   }).catch(function (err){
     console.error('/user/search/tags failed',err)
-    showFailToast("请求失败")
   })
   if(userListData){
     userListData.forEach(user =>{

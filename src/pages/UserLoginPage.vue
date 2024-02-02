@@ -15,13 +15,12 @@ const registerDataClear = () => {
   UserRegister.value.userPassword = '';
   UserRegister.value.checkPassword = '';
 }
-const onSubmit = (values) => {
-  console.log('submit', values);
-};
-const isRegister = ref(true);
+
+const isRegister = ref(false);
 
 import {useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
+import {setCurrentUserState} from "../store/user.js";
 const router = useRouter();
 
 const validatorAccount = () => {
@@ -41,7 +40,7 @@ const validatorLoginAccount = () => {
   }
 }
 const validatorStuId = () => {
-  if (UserRegister.value.stuId.length != 10){
+  if (UserRegister.value.stuId.length !== 10){
     return "学号长度必须为10"
   }
 }
@@ -56,14 +55,15 @@ const validator = () => {
   }
 }
 const userLogin = async (UserRegister) => {
-  let result = await userLoginService(UserRegister);
+  const result = await userLoginService(UserRegister);
   if(result.code === 0) {
+    setCurrentUserState((result.data));
     showSuccessToast(result.message);
     await router.replace("/");
   }
 }
 const userRegister = async (UserRegister) => {
-  let result = await userLoginService(UserRegister);
+  const result = await userRegisterService(UserRegister);
   if(result.code === 0){
     showSuccessToast(result.message);
   }

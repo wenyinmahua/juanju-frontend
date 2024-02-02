@@ -1,5 +1,4 @@
 <script setup>
-import BasicLayout from "./layouts/BasicLayout.vue";
 
 </script>
 
@@ -8,5 +7,7 @@ import BasicLayout from "./layouts/BasicLayout.vue";
 </template>
 
 <style scoped>
-
+body {
+  background-color: #5ffbf1;
+}
 </style>

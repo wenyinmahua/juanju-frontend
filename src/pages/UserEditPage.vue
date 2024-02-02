@@ -4,6 +4,7 @@ import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
 import request from "/src/plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
+import {getCurrentUserState} from "../store/user.js";
 const router = useRouter();
 const route = useRoute();
 const editUser = ref({
@@ -11,12 +12,19 @@ const editUser = ref({
   currentValue: route.query.currentValue,
   editName: route.query.editName,
 })
-const onSubmit = async(values) => {
-  const res = await request.post("/user/update",{
 
+
+const onSubmit = async(values) => {
+  const currentUser =await getCurrentUserState();
+  if(!currentUser){
+    showFailToast("用户未登录");
+    return;
+  }
+  const res = await request.post("/user/update",{
+    id:currentUser.id,
     [editUser.value.editKey] : editUser.value.currentValue,
   })
-  if(res.code == 0 && res.data > 0){
+  if(res.code === 0 && res.data > 0){
     showSuccessToast("修改成功")
     router.back();
   }else {
