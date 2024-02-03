@@ -57,9 +57,9 @@ const validator = () => {
 const userLogin = async (UserRegister) => {
   const result = await userLoginService(UserRegister);
   if(result.code === 0) {
-    setCurrentUserState((result.data));
+    setCurrentUserState(result.data);
     showSuccessToast(result.message);
-    await router.replace("/");
+    await router.replace("/user");
   }
 }
 const userRegister = async (UserRegister) => {

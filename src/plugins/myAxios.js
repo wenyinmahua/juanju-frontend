@@ -24,8 +24,8 @@ instance.interceptors.response.use(function (response) {
     // console.log("我收到你的响应啦。。。。",response)
     // const result = response.data;
     if(response.data.code !== 0){
-        showFailToast(response.message)
-        showFailToast(response.description);
+        showFailToast(response.data.message)
+        // showFailToast(response.data.description);
     }
     return response.data;
 }, function (error) {
