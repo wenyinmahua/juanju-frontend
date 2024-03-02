@@ -59,6 +59,7 @@ const userLogin = async (UserRegister) => {
   if(result.code === 0) {
     setCurrentUserState(result.data);
     showSuccessToast(result.message);
+    // localStorage.setItem("JuanJuUserLoginStatus",JSON.stringify(result.data));
     await router.replace("/user");
   }
 }
