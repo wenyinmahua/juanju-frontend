@@ -43,20 +43,49 @@ const joinTeamDialog = (teamId) =>{
   ).catch(() => {});
 }
 const router = useRouter();
-const updateTeamPage= (teamId:number) =>{
+const updateTeam= (teamId:number) =>{
   router.push({
         path: "/team/update",
         query: {teamId},
       }
   );
 }
-import {deleteTeamService} from '../api/team'
-const deleteTeamPage = async (id) =>{
-  console.log(id)
+import {deleteTeamService, quitTeamService} from '../api/team'
+const deleteTeam = async (id) =>{
   const result = await deleteTeamService(id);
+  window.location.reload();
   if (result.code === 0){
     showSuccessToast("删除队伍成功")
   }
+}
+const quitTeam = async(id) =>{
+  const result = await quitTeamService(id);
+  if (result?.code === 0){
+    showSuccessToast("退出队伍成功");
+  }else {
+    showFailToast("退出队伍失败")
+  }
+}
+
+const deleteTeamDialog = (teamId) =>{
+  showConfirmDialog({
+    message:
+        '是否解散该队伍？',
+  }).then(() => {
+    deleteTeam(teamId);
+      }
+  ).catch(() => {});
+}
+
+const quitTeamDialog = (teamId) =>{
+  showConfirmDialog({
+    message:
+        '是否退出该队伍？',
+  }).then(() => {
+    quitTeam(teamId);
+    window.location.reload();
+      }
+  ).catch(() => {});
 }
 
 
@@ -64,6 +93,7 @@ const deleteTeamPage = async (id) =>{
 </script>
 
 <template>
+  <van-empty v-if="!teamList" description="描述文字" />
   <van-card
       v-for="team in props.teamList"
       :desc="`${team.description}`"
@@ -83,11 +113,13 @@ const deleteTeamPage = async (id) =>{
       <div>{{'最大人数:' + team.maxNum}}</div>
     </template>
     <template #footer>
-      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="success" @click="updateTeamPage(team.id)">更新队伍</van-button>
-      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="danger" @click="deleteTeamPage(team.id)">解散队伍</van-button>
+      {{currentUser?.id}}
+      {{team.userId}}
 
-      <van-button size="small" v-if="currentUser?.id !== team.userId"v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
-
+      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="success" @click="updateTeam(team.id)">更新队伍</van-button>
+      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
+      <van-button size="small" v-if="team.join || currentUser?.id == team.userId" plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
+      <van-button size="small" v-if="currentUser?.id !== team.userId && !team.join"v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
     </template>
   </van-card>
 </template>

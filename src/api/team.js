@@ -5,7 +5,11 @@ export const addTeamService = (TeamRequest) =>{
 }
 
 export const deleteTeamService = (id) =>{
-    return request.post("/team/delete",{id:id});
+    return request.post(`/team/delete/${id}`);
+}
+
+export const quitTeamService = (id) =>{
+    return request.post(`/team/quit/${id}`);
 }
 
 export const uploadImage = (file) => {

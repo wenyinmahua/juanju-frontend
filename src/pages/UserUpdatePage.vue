@@ -94,16 +94,36 @@ const afterRead =  async (file) =>{
 <template>
 
 <div class="content">
-  <template v-if="user">
-    <van-cell  is-link to="/user/update" >
-      <template #title>
+<div class="image">
+<!--  <van-image-->
+<!--      round-->
+<!--      width="5rem"-->
+<!--      height="5rem"-->
+<!--      fit="cover"-->
+<!--      position="center"-->
+<!--      :src="user.avatarUrl"-->
+<!--  />-->
+</div>
+  <van-cell title="头像">
+<!--    <van-icon :name="user.avatarUrl" size="40px" />-->
+    <van-uploader :v-model="fileList" multiple :max-count="1" :after-read="afterRead" reupload :max-size="500 * 1024" @oversize="onOversize" >
+      <van-image :src="user.avatarUrl" width="40px"/>
+    </van-uploader>
+<!--    <van-uploader multiple v-model="file" :max-size="500 * 1024" @oversize="onOversize"  :max-count="1" />-->
+<!--    <van-image :src="user.avatarUrl" width="40px"/>-->
+  </van-cell>
+  <van-cell title="昵称" is-link to="/user/edit" :value="user.username" @click="toEdit('username', '昵称', user.username)"/>
+  <van-cell title="账号" :value="user.userAccount" />
 
-<span style="color: #a8a8a8;font-size: large">{{user.username}}</span>的个人信息
-      </template>
-    </van-cell>
-    <van-cell title="我创建的队伍" is-link to="/user/team/create" />
-    <van-cell title="我加入的队伍" is-link to="/user/team/join" />
-  </template>
+  <van-cell title="性别" is-link to="/user/edit"  :value="user.gender" @click="toEditGender('gender', '性别', user.gender)" />
+  <van-cell title="电话" is-link to="/user/edit"  :value="user.phone" @click="toEdit('phone', '电话', user.phone)"/>
+  <van-cell title="邮箱" is-link to="/user/edit"  :value="user.email" @click="toEdit('email', '邮箱', user.email)"/>
+  <van-cell title="专业" is-link to="/user/edit"  :value="user.major" @click="toEdit('major', '专业', user.major)"/>
+  <van-cell title="学号" :value="user.stuId" />
+  <!--  <van-cell title="标签" is-link to="/user/edit"  :value="user.tags" />-->
+  <van-cell title="注册日期" :value="user.createTime.toLocaleString()" />
+  <!---->
+
 </div>
 </template>
 
