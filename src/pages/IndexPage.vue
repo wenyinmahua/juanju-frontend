@@ -59,13 +59,11 @@ const change = async () =>{
   }
 }
 
-const count = ref(0);
 const loading = ref(false);
 const onRefresh = () => {
   setTimeout(() => {
     showToast('刷新成功');
     loading.value = false;
-    count.value++;
     change()
   }, 1000);
 };
@@ -97,11 +95,5 @@ const onRefresh = () => {
   line-height: 100px;
   text-align: center;
   background-color: #39a9ed;
-}
-.doge {
-  width: 140px;
-  height: 72px;
-  margin-top: 8px;
-  border-radius: 4px;
 }
 </style>

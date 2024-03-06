@@ -71,7 +71,7 @@ const categoryList = ref(originList)
 import {useRouter} from "vue-router";
 const router = useRouter();
 import {addTeamService} from "../api/team.js";
-import {showSuccessToast} from "vant";
+import {showFailToast, showSuccessToast} from "vant";
 const onSubmit = async () => {
   const result = await addTeamService(addTeamData.value);
   if(result.code === 0){
@@ -80,6 +80,13 @@ const onSubmit = async () => {
       path: 'team',
       replace: true,
     });
+  }else if (result.code === 40100 ){
+    showFailToast(result.message);
+    setTimeout(()=>{
+      router.push("/login")
+    },2000)
+  }else {
+    showFailToast(result.message);
   }
 }
 
@@ -98,7 +105,11 @@ const afterRead =  async (file) =>{
 <template>
   <div class="container">
   <van-form @submit="onSubmit">
+
     <van-cell-group inset>
+      <van-notice-bar color="#1989fa" background="#ecf9ff" scrollable left-icon="info-o" >
+        头像、最大人数和队伍分类上传后暂不支持更改，请谨慎选择
+      </van-notice-bar>
       <van-field  label="上传头像" :border= false>
         <template #input>
           <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead"/>
@@ -162,6 +173,7 @@ const afterRead =  async (file) =>{
           label="队伍分类"
           placeholder="请选择队伍分类"
           @click="showCategory = true"
+          :rules="[{ required: true, message: '请选择队伍分类' }]"
       />
       <van-popup v-model:show="showCategory" position="bottom" >
         <van-tree-select
@@ -172,7 +184,7 @@ const afterRead =  async (file) =>{
         <van-button type="primary" block @click="onCategoryConfirm(categoryId)">确定</van-button>
       </van-popup>
       <hr/>
-      <van-field name="status" label="队伍状态">
+      <van-field name="status" label="队伍状态" >
         <template #input>
           <van-radio-group v-model="addTeamData.status" direction="horizontal">
             <van-radio name="0">公开</van-radio>

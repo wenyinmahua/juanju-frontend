@@ -50,12 +50,47 @@ const onRefresh = () => {
   }, 1000);
 };
 const active = ref(0);
+const searchText = ref('');
+const searchTeamList = ref([]);
+const onSearch = async (searchText) =>{
+  console.log(searchText);
+  const result = await request.get('/team/list',{
+    params: {
+      searchText : searchText,
+      pageSize : 8,
+      pageNum : 1,
+    }
+  });
+  searchTeamList.value = result.data.records;
+  console.log(result.data.records);
+}
+
+const change = async () =>{
+   const teamListData = await request.get('/team/list', {
+    params: {
+      pageSize : pageSize.value,
+      pageNum: currentPage.value,
+    },
+  }).then(function (response){
+    showSuccessToast("请求成功");
+    total.value = response.data.total ;
+    return response.data.records;
+  }).catch(function (err){
+    showFailToast("请求失败");
+  })
+  teamList.value = teamListData;
+}
 
 </script>
 
 <template>
-  <div style="height: 110vh">
-  <van-pull-refresh v-model="loading" @refresh="onRefresh" >
+  <div>
+    <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch" />
+    <div v-if="searchText !== ''" style="height: 110vh">
+      <team-card-list :team-list="searchTeamList"/>
+      <van-pagination v-if="total > 5" v-model="currentPage" :total-items="total" :items-per-page="pageSize" @change="change" force-ellipses/>
+    </div>
+  <van-pull-refresh v-model="loading" @refresh="onRefresh" v-if="searchText === ''">
   <van-tabs v-model:active="active" style="height: 100vh">
     <van-tab title="竞赛" name="0">
       <van-tabs v-model:active="competition" type="card" >
@@ -97,9 +132,9 @@ const active = ref(0);
     <van-tab title="标签 4">内容 4</van-tab>
   </van-tabs>
 <!--    <team-card-list :team-list="teamList"/>-->
-  <van-floating-bubble v-model:offset="offset" axis="xy" magnetic="x" icon="add" @click="addTeam()" />
+  <van-floating-bubble v-model:offset="offset" axis="xy" magnetic="x" icon="plus" @click="addTeam()" />
 
-    <div style="height: 700px;"></div>
+    <div style="height:700px;"></div>
   </van-pull-refresh>
   </div>
 </template>

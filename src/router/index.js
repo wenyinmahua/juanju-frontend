@@ -10,6 +10,8 @@ import SearchResultPage from "../pages/SearchResultPage.vue";
 import UserLoginPage from "../pages/UserLoginPage.vue";
 import BasicLayout from "../layouts/BasicLayout.vue";
 import TeamAddPage from "../pages/TeamAddPage.vue";
+import TeamUpdatePage from "../pages/TeamUpdatePage.vue";
+import UserEditGenderPage from "../pages/UserEditGenderPage.vue";
 
 //3. 定义路由关系，由一个数组确定
 
@@ -23,7 +25,9 @@ const routes = [
         {path: '/search', component: Search},
         {path: '/user/edit', component: UserEdit},
         {path: '/user/list', component: SearchResultPage},
-        {path: '/team/add', component: TeamAddPage }
+        {path: '/team/add', component: TeamAddPage },
+        {path: '/team/update', component: TeamUpdatePage},
+        {path: '/user/editGender', component: UserEditGenderPage},
     ]
     },
 
