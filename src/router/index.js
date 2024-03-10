@@ -19,22 +19,22 @@ import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
 
 //3. 定义路由关系，由一个数组确定
 
-const routes = [
+export const routes = [
     {path: '/login', component: UserLoginPage},
     {path:'/index',component: BasicLayout, redirect: '/',
     children:[
-        {path: '/',component : Index},
-        {path: '/team',component: TeamPage},
-        {path: '/user', component: UserPage},
-        {path: '/search', component: Search},
-        {path: '/user/edit', component: UserEdit},
+        {path: '/',title:"伙伴匹配",component : Index},
+        {path: '/team',title:"找队伍",component: TeamPage},
+        {path: '/user', title:"个人中心", component: UserPage},
+        {path: '/search', title:"找队友", component: Search},
+        {path: '/user/edit',title:"更新个人信息", component: UserEdit},
         {path: '/user/list', component: SearchResultPage},
-        {path: '/team/add', component: TeamAddPage },
-        {path: '/team/update', component: TeamUpdatePage},
-        {path: '/user/editGender', component: UserEditGenderPage},
-        {path: '/user/update', component: UserUpdatePage},
-        {path: '/user/team/join', component: UserTeamJoinPage},
-        {path: '/user/team/create', component: UserTeamCreatePage},
+        {path: '/team/add',title:"创建队伍", component: TeamAddPage },
+        {path: '/team/update',title:"更新队伍", component: TeamUpdatePage},
+        {path: '/user/editGender',title:"更新个人信息", component: UserEditGenderPage},
+        {path: '/user/update',title:"更新个人信息", component: UserUpdatePage},
+        {path: '/user/team/join', title:"我加入的队伍",component: UserTeamJoinPage},
+        {path: '/user/team/create', title:"我创建的队伍", component: UserTeamCreatePage},
 
     ]
     },

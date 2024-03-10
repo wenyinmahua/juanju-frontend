@@ -1,12 +1,37 @@
 <script setup>
 import { showToast } from 'vant';
 import 'vant/es/toast/style'
-import {useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 import {ref} from "vue";
+import {routes} from "../router/index.js"
 // import { ref } from "vue";
 // const active = ref("index");
+const title = ref("伙伴匹配");
 const onChange = (index) => showToast(`标签 ${index}`);
 const router = useRouter()
+const DEFAULT_TITLE = "伙伴匹配";
+
+router.beforeEach((to, from) => {
+  const toPath = to.path;
+  const route = routes.find((parentRoute) => {
+    if (toPath === parentRoute.path) {
+      return parentRoute;
+    }
+
+    if (parentRoute.children && parentRoute.children.length > 0) {
+      const childRoute = parentRoute.children.find((routeChild) => toPath === routeChild.path);
+
+      // 如果找到了子路由，将标题修改为恰当内容，则返回该子路由？？返回没有用，不会写，所以你懂的，目的只是为了  ：：title.value = childRoute.title ?? DEFAULT_TITLE;
+      if (childRoute) {
+        title.value = childRoute.title ?? DEFAULT_TITLE;
+        return childRoute;
+      }
+    }
+    // 没有找到匹配项则继续查找下一个顶级路由
+    return false;
+  });
+})
+
 const onClickLeft = () => {
   router.back()
 }
@@ -23,7 +48,7 @@ const onClickRight = () => {
 
 <template>
   <van-nav-bar
-      title="Juan-Ju"
+      :title="title"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"

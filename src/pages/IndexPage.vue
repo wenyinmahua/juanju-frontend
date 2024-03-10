@@ -11,30 +11,11 @@ const pageSize = ref(8);
 const total = ref(1);
 const currentPage = ref(1);
 // import {setCurrentUserState} from "../store/user.js";
+const skeletonLoading = ref(false);
 onMounted(async () => {
   // setCurrentUserState(JSON.parse(localStorage.getItem("JuanJuUserLoginStatus")));
-  const userListData = await request.get('/user/recommend', {
-    params: {
-      pageSize : pageSize.value,
-      pageNum: 1,
-    },
-  }).then(function (response){
-    console.log('/user/recommend succeed',response)
-    // showSuccessToast("请求成功");
-    total.value = response.data.total;
-    return response.data.records;
-  }).catch(function (err){
-    console.error('/user/recommend',err)
-    // showFailToast("请求失败");
-  })
-  if(userListData){
-    userListData.forEach(user =>{
-      if(user.tags) {
-        user.tags = JSON.parse(user.tags)
-      }
-    })
-    userList.value = userListData;
-  }
+  await change()
+  skeletonLoading.value = false;
 })
 const change = async () =>{
   const userListData = await request.get('/user/recommend', {
@@ -67,7 +48,47 @@ const onRefresh = () => {
     change()
   }, 1000);
 };
+type ModeType = 'default' | 'match';
+const mode = ref<ModeType>("default");
+const isMatchModel = ref(<boolean>false);
+const doMatch = async() =>{
+  mode.value = "match";
+  const num = 10;
+  const userListData = await request.get('/user/match', {
+    params: {
+      num,
+    },
+  }).then(function (response){
+    console.log('/user/match succeed',response)
+    // showSuccessToast("请求成功");
+    total.value = response.data.total;
+    return response.data;
+  }).catch(function (err){
+    console.error('/user/match',err)
+    // showFailToast("请求失败");
+  })
+  if(userListData){
+    userListData.forEach(user =>{
+      if(user.tags) {
+        user.tags = JSON.parse(user.tags)
+      }
+    })
+    userList.value = userListData;
+  }
+}
+
+const loadData = async () =>{
+  skeletonLoading.value = true;
+  if(isMatchModel.value){
+    await doMatch();
+  }else {
+    await change();
+  }
+  skeletonLoading.value = false;
+}
+
 </script>
+
 
 <template>
   <van-pull-refresh v-model="loading" @refresh="onRefresh" >
@@ -77,7 +98,13 @@ const onRefresh = () => {
     <van-swipe-item>通知预留区2</van-swipe-item>
     <van-swipe-item>通知预留区3</van-swipe-item>
   </van-swipe>
-  <user-card-list :user-list="userList"></user-card-list>
+
+    <van-cell center title="心动模式" v-if="currentPage == 1">
+      <template #right-icon>
+        <van-switch v-model="isMatchModel" @click="loadData()" />
+      </template>
+    </van-cell>
+  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading"></user-card-list>
   <van-empty v-if="!userList || userList.length < 1" image="search" description="数据为空" />
   <van-back-top immediate />
 

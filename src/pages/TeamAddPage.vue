@@ -77,7 +77,7 @@ const onSubmit = async () => {
   if(result.code === 0){
     showSuccessToast(result.message);
     await router.push({
-      path: 'team',
+      path: '/team',
       replace: true,
     });
   }else if (result.code === 40100 ){

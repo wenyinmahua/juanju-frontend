@@ -6,6 +6,7 @@ interface TeamCardListProps {
   teamList: TeamType[];
 }
 const props = withDefaults( defineProps<TeamCardListProps>(),{
+  //@ts-ignore
   teamList : [] as TeamType[],
 });
 import 'vant/es/notify/style'
@@ -17,8 +18,9 @@ const joinTeam = async (teamId:Number) =>{
   const result = await request.post('/team/join',{teamId});
   if (result.code === 0){
     showNotify({ type: 'success', message:"加入队伍成功"});
+    window.location.reload();
   }else{
-    showNotify({ type: 'warning', message:( (result.description) ?`${result.description}`:'')});
+    showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
 }
 const currentUser = ref();
@@ -118,8 +120,8 @@ const quitTeamDialog = (teamId) =>{
 
       <van-button size="small" v-if="currentUser?.id === team.userId" plain type="success" @click="updateTeam(team.id)">更新队伍</van-button>
       <van-button size="small" v-if="currentUser?.id === team.userId" plain type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
-      <van-button size="small" v-if="team.join || currentUser?.id == team.userId" plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
-      <van-button size="small" v-if="currentUser?.id !== team.userId && !team.join"v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
+      <van-button size="small" v-if="team.hasJoin || team.join" plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
+      <van-button size="small" v-if="!team.hasJoin && !team.join"v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
     </template>
   </van-card>
 </template>
