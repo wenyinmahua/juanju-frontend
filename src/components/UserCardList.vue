@@ -15,7 +15,7 @@ const props = withDefaults( defineProps<UserCardListProps>(),{
 <template>
   <van-skeleton title avatar :row="3" :loading="props.skeletonLoading" v-for="user in props.userList" avatar-shape="square" avatar-size="88px">
   <van-card
-      :desc="`${user.profile}`"
+      :desc="`简介：${user.profile}`"
       :title="`${user.username}(${user.major})`"
       :thumb='user.avatarUrl'
   >

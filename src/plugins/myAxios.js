@@ -2,15 +2,20 @@ import axios from 'axios';
 import {showFailToast, showSuccessToast} from "vant";
 import router from "../router/index.js";
 
+const isDev = process.env.NODE_ENV === "development";
 const instance = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: isDev ?'http://localhost:8080/api' : '线上环境',
     // withCredentials: true，允许 cookie 跨域
     withCredentials: true
 });
+let token = sessionStorage.getItem('token');
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
     console.log("我要发送请求啦。。。。",config)
     // 在发送请求之前做些什么
+    if (token) {
+        config.headers['authorization'] = token
+    }
     return config;
 }, function (error) {
     // 对请求错误做些什么

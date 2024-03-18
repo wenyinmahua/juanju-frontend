@@ -57,9 +57,8 @@ const validator = () => {
 const userLogin = async (UserRegister) => {
   const result = await userLoginService(UserRegister);
   if(result.code === 0) {
-    setCurrentUserState(result.data);
     showSuccessToast(result.message);
-    // localStorage.setItem("JuanJuUserLoginStatus",JSON.stringify(result.data));
+    sessionStorage.setItem("token", result.data)
     await router.replace("/user");
   }
 }
@@ -76,7 +75,7 @@ const userRegister = async (UserRegister) => {
 <template >
   <div class="container" >
     <div style="text-align: center;">
-      <van-image src="src/assets/logo.png" width="200px" />
+      <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/c3149768-abd4-46d3-82d9-b804bac9105a.png" width="200px" />
     </div>
     <van-form @submit="onSubmit" v-if="isRegister" :model="UserRegister">
       <h2 style="margin-left: 45%; color: #535bf2" >注册</h2>

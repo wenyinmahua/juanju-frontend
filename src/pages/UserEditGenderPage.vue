@@ -4,7 +4,6 @@ import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
 import request from "/src/plugins/myAxios.js";
 import {showFailToast, showSuccessToast} from "vant";
-import {getCurrentUserState} from "../store/user.js";
 import {getCurrentUserService} from "../api/user.js";
 const router = useRouter();
 const route = useRoute();

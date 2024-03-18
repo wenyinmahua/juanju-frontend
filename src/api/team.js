@@ -1,4 +1,5 @@
 import request from "/src/plugins/myAxios.js";
+import exp from "node:constants";
 
 export const addTeamService = (TeamRequest) =>{
     return request.post("/team/add",TeamRequest);
@@ -28,5 +29,9 @@ export const getTeamById =(id) =>{
 
 export const updateTeamService = (TeamUpdateRequest) =>{
     return request.put('/team/update',TeamUpdateRequest);
+}
+
+export const joinTeamService = (teamId) =>{
+    return request.post('/team/join',{teamId});
 }
 

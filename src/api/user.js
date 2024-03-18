@@ -10,10 +10,6 @@ export const userRegisterService = (UserRegisterRequest) =>{
 
 
 export const getCurrentUserService = async () => {
-    // const currentUser = getCurrentUserState();
-    // if(currentUser){
-    //     return currentUser;
-    // }
     const res = await request.get('/user/current');
     if(res.code === 0 ){
         setCurrentUserState(res.data);

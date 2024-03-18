@@ -41,11 +41,16 @@ const change = async () =>{
 }
 
 const loading = ref(false);
-const onRefresh = () => {
-  setTimeout(() => {
+const onRefresh =  () => {
+  setTimeout(async () => {
     showToast('刷新成功');
     loading.value = false;
-    change()
+    if (isMatchModel.value) {
+      return;
+    } else {
+      await change();
+    }
+
   }, 1000);
 };
 type ModeType = 'default' | 'match';
@@ -99,7 +104,7 @@ const loadData = async () =>{
     <van-swipe-item>通知预留区3</van-swipe-item>
   </van-swipe>
 
-    <van-cell center title="心动模式" v-if="currentPage == 1">
+    <van-cell center title="心动模式（24小时更新一次）" v-if="currentPage == 1">
       <template #right-icon>
         <van-switch v-model="isMatchModel" @click="loadData()" />
       </template>

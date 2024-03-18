@@ -31,11 +31,13 @@ import {onMounted, ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
 import { setCurrentUserState} from '../store/user'
 import {isImageFile} from "vant/es/uploader/utils";
+import myAxios from "../plugins/myAxios.js";
+import router from "../router";
 const fileList = ref([]);
 onMounted(async()=> {
   const result = await request.get("/user/current")
   setCurrentUserState(result.data);
-  if(result.code === 0){
+  if(result?.code === 0){
     user.value = result.data;
     fileList.value = result.data.avatarUrl;
     if (user.value.gender === 0){
@@ -45,38 +47,15 @@ onMounted(async()=> {
     }else{
       user.value.gender = '保密'
     }
-    showSuccessToast("获取用户信息成功")
+    // showSuccessToast("获取用户信息成功")
   }else{
-    showFailToast(result.message)
+    showFailToast(result?.message)
   }
 })
-fileList.value = user.value.avatarUrl;
-const router = useRouter();
-const toEdit = (editKey: string, editName: string, currentValue: string) =>{
-  // 路由带着参数跳转
-  router.push({
-    path: 'user/edit',
-    query: {
-      editKey,
-      editName,
-      currentValue,
-    }
-  })
+const logout = async() =>{
+  await request.post('/user/logout');
+  await router.push('/login');
 }
-const toEditGender = (editKey: string, editName: string, currentValue: string)=>{
-  router.push({
-    path:'user/editGender',
-    query: {
-      editKey,
-      editName,
-      currentValue,
-    }
-  })
-}
-const onOversize = (file) => {
-  console.log(file);
-  showFailToast('文件大小不能超过 500kb');
-};
 import {uploadImage} from "../api/team.js";
 const afterRead =  async (file) =>{
   const result = await uploadImage(file);
@@ -88,22 +67,40 @@ const afterRead =  async (file) =>{
     })
   }
 }
-
+const onOversize = (file) => {
+  console.log(file);
+  showFailToast('文件大小不能超过 500kb');
+};
 </script>
 
 <template>
 
 <div class="content">
-  <template v-if="user">
-    <van-cell  is-link to="/user/update" >
-      <template #title>
 
-<span style="color: #a8a8a8;font-size: large">{{user.username}}</span>的个人信息
+  <template v-if="user">
+    <div class="image">
+<!--      <van-image-->
+<!--          round-->
+<!--          width="6rem"-->
+<!--          height="6rem"-->
+<!--          :src=user.avatarUrl-->
+<!--      />-->
+      <van-uploader :v-model="fileList"  multiple :max-count="1" :after-read="afterRead" reupload :max-size="500 * 1024" @oversize="onOversize" >
+        <van-image height="6rem" width ="6rem" :src="user.avatarUrl ? user.avatarUrl: 'https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/c3149768-abd4-46d3-82d9-b804bac9105a.png'" round />
+      </van-uploader>
+    </div>
+    <van-cell  is-link to="/user/update" icon="user-o">
+      <template #title>
+<span  style="color: #a8a8a8;font-size: large">{{user.username}}</span>的个人信息
       </template>
     </van-cell>
-    <van-cell title="我创建的队伍" is-link to="/user/team/create" />
-    <van-cell title="我加入的队伍" is-link to="/user/team/join" />
+    <van-cell title="我创建的队伍" is-link to="/user/team/create" icon="friends-o"/>
+    <van-cell title="我加入的队伍" is-link to="/user/team/join" icon="friends-o"/>
   </template>
+  <div style="margin: 16px">
+    <van-button  block @click="logout" type="primary" icon="contact-o">退出登录</van-button>
+  </div>
+
 </div>
 </template>
 
@@ -111,9 +108,9 @@ const afterRead =  async (file) =>{
 <style scoped>
 .content {
   height: 100vh;
-  background-color: #f7f7f7;
 }
 .image{
+  padding: 20px;
   background-image: radial-gradient(circle, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
   text-align: center;
 }

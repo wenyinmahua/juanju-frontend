@@ -15,6 +15,7 @@ import UserEditGenderPage from "../pages/UserEditGenderPage.vue";
 import UserUpdatePage from "../pages/UserUpdatePage.vue";
 import UserTeamJoinPage from "../pages/UserTeamJoinPage.vue";
 import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
+import UserEditPasswordPage from "../pages/UserEditPasswordPage.vue";
 
 
 //3. 定义路由关系，由一个数组确定
@@ -35,6 +36,7 @@ export const routes = [
         {path: '/user/update',title:"更新个人信息", component: UserUpdatePage},
         {path: '/user/team/join', title:"我加入的队伍",component: UserTeamJoinPage},
         {path: '/user/team/create', title:"我创建的队伍", component: UserTeamCreatePage},
+        {path: '/user/update/password', title: "更新密码", component: UserEditPasswordPage},
 
     ]
     },

@@ -7,7 +7,7 @@ import {routes} from "../router/index.js"
 // import { ref } from "vue";
 // const active = ref("index");
 const title = ref("伙伴匹配");
-const onChange = (index) => showToast(`标签 ${index}`);
+// const onChange = (index) => showToast(`标签 ${index}`);
 const router = useRouter()
 const DEFAULT_TITLE = "伙伴匹配";
 
@@ -47,6 +47,7 @@ const onClickRight = () => {
 </script>
 
 <template>
+  <van-sticky>
   <van-nav-bar
       :title="title"
       left-text="返回"
@@ -59,6 +60,7 @@ const onClickRight = () => {
     </template>
 
   </van-nav-bar>
+  </van-sticky>
 <!--  <van-config-provider :theme="theme"><van-icon name="eye" @click="theme= 'dark'"/></van-config-provider>-->
 <!--  <van-config-provider theme="dark"></van-config-provider>-->
   <div id="content">
@@ -78,8 +80,8 @@ const onClickRight = () => {
 <!--  <van-tabbar v-model="active" @change="onChange" route>-->
   <van-tabbar  @change="onChange" route>
     <van-tabbar-item icon="home-o" to="/" name="index">主页</van-tabbar-item>
-    <van-tabbar-item icon="search" to="/team" name="team">队伍</van-tabbar-item>
-    <van-tabbar-item icon="friends-o" to="/user" name="user">个人</van-tabbar-item>
+    <van-tabbar-item icon="friends-o" to="/team" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item icon="contact-o" to="/user" name="user">个人</van-tabbar-item>
   </van-tabbar>
 </template>
 
@@ -89,7 +91,7 @@ const onClickRight = () => {
   z-index: var(--van-nav-bar-z-index);
   line-height: var(--van-line-height-lg);
   text-align: center;
-  background: #e8e8e8;
+  background: #ffffff;
   -webkit-user-select: none;
   user-select: none;
 }
