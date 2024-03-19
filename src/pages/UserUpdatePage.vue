@@ -17,7 +17,7 @@ import {useRouter} from "vue-router";
 const user = ref({
   id:'',
   username: '',
-  userAccount:11,
+  userAccount:'',
   createTime: new Date(),
   phone:'',
   email: '',
@@ -36,7 +36,7 @@ const fileList = ref([]);
 onMounted(async()=> {
   const result = await request.get("/user/current")
   setCurrentUserState(result.data);
-  if(result.code === 0){
+  if(result?.code === 0){
     user.value = result.data;
     fileList.value = result.data.avatarUrl;
     if (user.value.gender === 0){
@@ -48,7 +48,7 @@ onMounted(async()=> {
     }
     // showSuccessToast("获取用户信息成功")
   }else{
-    showFailToast(result.message)
+    showFailToast(result?.message)
   }
 })
 fileList.value = user.value.avatarUrl;
@@ -89,8 +89,15 @@ const afterRead =  async (file) =>{
     })
   }
 }
-const toEditPassword = () =>{
-  router.push('/user/update/password');
+const toEditPassword = (editKey: string, editName: string, currentValue: string) =>{
+  router.push({
+    path:'/user/update/password',
+    query: {
+      editKey,
+      editName,
+      currentValue,
+    }
+  });
 }
 
 </script>
@@ -123,7 +130,7 @@ const toEditPassword = () =>{
   <van-cell title="电话" is-link to="/user/edit"  :value="user.phone" @click="toEdit('phone', '电话', user.phone)"/>
   <van-cell title="邮箱" is-link to="/user/edit"  :value="user.email" @click="toEdit('email', '邮箱', user.email)"/>
   <van-cell title="专业" is-link to="/user/edit"  :value="user.major" @click="toEdit('major', '专业', user.major)"/>
-  <van-cell title="密码" is-link to="/user/edit"  @click="toEditPassword"/>
+  <van-cell title="密码" is-link to="/user/edit"  @click="toEditPassword('userAccount', '账号', user.userAccount)"/>
 
   <van-cell title="学号" :value="user.stuId" />
   <!--  <van-cell title="标签" is-link to="/user/edit"  :value="user.tags" />-->

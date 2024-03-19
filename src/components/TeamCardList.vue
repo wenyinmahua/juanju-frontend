@@ -100,7 +100,7 @@ const joinEncryptTeamDialog = async (teamId)=>{
 }
 const joinEncryptTeam = async (teamPassword:string) =>{
   const result = await request.post('/team/join',{teamId:currentTeamId.value,teamPassword});
-  if (result.code === 0){
+  if (result?.code === 0){
     showNotify({ type: 'success', message:"加入队伍成功"});
     window.location.reload();
   }else{
@@ -133,9 +133,9 @@ const joinEncryptTeam = async (teamPassword:string) =>{
     <template #footer>
       <van-button size="small" v-if="currentUser?.id === team.userId" plain type="success" @click="updateTeam(team.id)">更新队伍</van-button>
       <van-button size="small" v-if="currentUser?.id === team.userId" plain type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
-      <van-button size="small" v-if="team.hasJoin || team.join" plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
-      <van-button size="small" v-if="!team.hasJoin && !team.join && team.status === 0" v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
-      <van-button size="small" v-if="!team.hasJoin && !team.join && team.status === 2" v-model="teamId" plain type="primary" @click="joinEncryptTeamDialog(team.id)">加入队伍</van-button>
+      <van-button size="small" v-if="team.hasJoin " plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
+      <van-button size="small" v-if="!team.hasJoin && team.status === 0" v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
+      <van-button size="small" v-if="!team.hasJoin && team.status === 2" v-model="teamId" plain type="primary" @click="joinEncryptTeamDialog(team.id)">加入队伍</van-button>
 
     </template>
   </van-card>

@@ -32,15 +32,7 @@ import request from "../plugins/myAxios.js";
 const count = ref(0);
 const loading = ref(false);
 onMounted(async ()=>{
-  const result = await request.get('/team/list')
-  teamList.value = result.data?.records;
-  total.value = result.data?.total;
-  console.log(teamList)
-  if (result?.code === 0){
-    // teamList.value = result.records;
-  }else {
-    showFailToast("加载队伍失败");
-  }
+  await onSearch('',0)
 })
 const onRefresh = () => {
   setTimeout(() => {
@@ -53,7 +45,6 @@ const active = ref(0);
 const searchText = ref('');
 // const searchTeamList = ref([]);
 const onSearch = async (searchText, status) =>{
-  console.log(searchText);
   const result = await request.get('/team/list',{
     params: {
       searchText : searchText,
@@ -62,8 +53,11 @@ const onSearch = async (searchText, status) =>{
       pageNum : 1,
     }
   });
+  if (result?.code !== 0){
+    showFailToast("加载队伍失败")
+  }
   teamList.value = result.data?.records;
-  console.log(result.data?.records);
+
 }
 
 const change = async () =>{

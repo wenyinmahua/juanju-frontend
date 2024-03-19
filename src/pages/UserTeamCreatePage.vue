@@ -34,9 +34,7 @@ const loading = ref(false);
 onMounted(async ()=>{
   const result = await request.get('/team/list/my/create')
   teamList.value = result.data.records;
-  for (let i = 0; i < teamList.value.length; i++) {
-    teamList.value[i].join = true;
-  }
+
   total.value = result.data.total;
   console.log(teamList)
   if (result?.code === 0){

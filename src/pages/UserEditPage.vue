@@ -13,7 +13,7 @@ const editUser = ref({
   editName: route.query.editName,
 })
 
-
+const loading = ref(false);
 const onSubmit = async(values) => {
   const currentUser =await getCurrentUserService();
   if(!currentUser){
@@ -25,8 +25,12 @@ const onSubmit = async(values) => {
     [editUser.value.editKey] : editUser.value.currentValue,
   })
   if(res.code === 0 && res.data > 0){
-    showSuccessToast("修改成功")
-    router.back();
+    // showSuccessToast("修改成功")
+    loading.value = true;
+    setTimeout(()=>{
+      router.back();
+    },2000)
+
   }else {
     showFailToast("修改失败")
   }
@@ -51,8 +55,28 @@ const onSubmit = async(values) => {
       </van-button>
     </div>
   </van-form>
+  <van-overlay :show="loading">
+    <div class="wrapper" @click.stop>
+      <div class="block">
+        <van-loading size="50px" vertical>保存中...</van-loading>
+      </div>
+    </div>
+  </van-overlay>
 </template>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
+.block {
+  width: 120px;
+  height: 100px;
+  padding-top: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+}
 </style>
