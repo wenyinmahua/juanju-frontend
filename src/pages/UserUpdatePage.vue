@@ -25,7 +25,9 @@ const user = ref({
   major:'',
   stuId:'',
   avatarUrl: null,
-  password:''
+  password:'',
+  profile:'',
+  tags:'',
 });
 import request from "../plugins/myAxios.js";
 import {onMounted, ref} from "vue";
@@ -45,6 +47,9 @@ onMounted(async()=> {
       user.value.gender = '女'
     }else{
       user.value.gender = '保密'
+    }
+    if(user.value.tags) {
+      user.value.tags = JSON.parse(user.value.tags)
     }
     // showSuccessToast("获取用户信息成功")
   }else{
@@ -99,22 +104,22 @@ const toEditPassword = (editKey: string, editName: string, currentValue: string)
     }
   });
 }
+const toEditTags = (editKey: string, editName: string, currentValue: string) =>{
+  router.push({
+    path:'/user/editTags',
+    query: {
+      editKey,
+      editName,
+      currentValue,
+    }
+  });
+}
 
 </script>
 
 <template>
 
 <div class="content">
-<div class="image">
-<!--  <van-image-->
-<!--      round-->
-<!--      width="5rem"-->
-<!--      height="5rem"-->
-<!--      fit="cover"-->
-<!--      position="center"-->
-<!--      :src="user.avatarUrl"-->
-<!--  />-->
-</div>
   <van-cell title="头像">
 <!--    <van-icon :name="user.avatarUrl" size="40px" />-->
     <van-uploader :v-model="fileList" multiple :max-count="1" :after-read="afterRead" reupload :max-size="500 * 1024" @oversize="onOversize" >
@@ -131,9 +136,13 @@ const toEditPassword = (editKey: string, editName: string, currentValue: string)
   <van-cell title="邮箱" is-link to="/user/edit"  :value="user.email" @click="toEdit('email', '邮箱', user.email)"/>
   <van-cell title="专业" is-link to="/user/edit"  :value="user.major" @click="toEdit('major', '专业', user.major)"/>
   <van-cell title="密码" is-link to="/user/edit"  @click="toEditPassword('userAccount', '账号', user.userAccount)"/>
-
+  <van-cell title="个人简介" is-link to="/user/edit"  :value="user.profile" @click="toEdit('profile', '个人简介', user.profile)"/>
   <van-cell title="学号" :value="user.stuId" />
-  <!--  <van-cell title="标签" is-link to="/user/edit"  :value="user.tags" />-->
+  <van-cell title="标签" is-link to="/user/edit"  @click="toEditTags('tags', '标签', user.tags)">
+      <van-tag color="#7232dd"  v-for="tag in  user.tags" style="margin-right: 8px;margin-top: 8px;">
+        {{tag}}
+      </van-tag>
+  </van-cell>
   <van-cell title="注册日期" :value="user.createTime.toLocaleString()" />
   <!---->
 

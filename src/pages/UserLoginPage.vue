@@ -19,7 +19,7 @@ const registerDataClear = () => {
 const isRegister = ref(false);
 
 import {useRouter} from "vue-router";
-import {showSuccessToast} from "vant";
+import {showFailToast, showSuccessToast} from "vant";
 import {setCurrentUserState} from "../store/user.js";
 const router = useRouter();
 
@@ -58,14 +58,26 @@ const userLogin = async (UserRegister) => {
   const result = await userLoginService(UserRegister);
   if(result.code === 0) {
     showSuccessToast(result.message);
-    sessionStorage.setItem("token", result.data)
-    await router.replace("/user");
+    localStorage.setItem("token", result.data)
+    setTimeout(()=>{
+      // router.replace("/");
+      location.replace("/")
+    },2000)
+  }else {
+    showFailToast(result.message);
   }
+
 }
 const userRegister = async (UserRegister) => {
   const result = await userRegisterService(UserRegister);
   if(result.code === 0){
     showSuccessToast(result.message);
+    setTimeout(()=>{
+      location.replace("/login")
+    },2000)
+  }
+  else {
+    showFailToast(result.message);
   }
 
 }
@@ -126,17 +138,19 @@ const userRegister = async (UserRegister) => {
             v-model="UserRegister.userAccount"
             name="账号"
             label="账号"
-            placeholder="账号或学号"
+            placeholder="账号：mahua"
             :rules="[{ validator: validatorLoginAccount, required: true, message: '请填写账号' }]"
         />
+<!--        placeholder="账号或学号"-->
         <van-field
             v-model="UserRegister.userPassword"
             type="password"
             name="密码"
             label="密码"
-            placeholder="请填写密码"
+            placeholder="密码：123456789"
             :rules="[{ validator: validatorPassword, required: true, message: '请填写密码' }]"
         />
+<!--        placeholder="请填写密码"-->
       </van-cell-group>
       <div style="margin: 16px;">
         <van-button round block  native-type="submit" color="#7f5feb" @click="userLogin(UserRegister)">

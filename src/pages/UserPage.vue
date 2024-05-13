@@ -54,6 +54,7 @@ onMounted(async()=> {
 })
 const logout = async() =>{
   await request.post('/user/logout');
+  window.localStorage.removeItem("token")
   await router.push('/login');
 }
 import {uploadImage} from "../api/team.js";
@@ -79,12 +80,6 @@ const onOversize = (file) => {
 
   <template v-if="user">
     <div class="image">
-<!--      <van-image-->
-<!--          round-->
-<!--          width="6rem"-->
-<!--          height="6rem"-->
-<!--          :src=user.avatarUrl-->
-<!--      />-->
       <van-uploader :v-model="fileList"  multiple :max-count="1" :after-read="afterRead" reupload :max-size="500 * 1024" @oversize="onOversize" >
         <van-image height="6rem" width ="6rem" :src="user.avatarUrl ? user.avatarUrl: 'https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/c3149768-abd4-46d3-82d9-b804bac9105a.png'" round />
       </van-uploader>

@@ -4,8 +4,6 @@ import {useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
 import request from '../plugins/myAxios.js'
 import {showFailToast, showSuccessToast, showToast} from "vant";
-const route = useRoute()
-const { tags } = route.query;
 const userList = ref([]);
 const pageSize = ref(8);
 const total = ref(1);
@@ -104,7 +102,7 @@ const loadData = async () =>{
     <van-swipe-item>通知预留区3</van-swipe-item>
   </van-swipe>
 
-    <van-cell center title="心动模式（24小时更新一次）" v-if="currentPage == 1">
+    <van-cell center title="匹配模式（24小时更新一次）" v-if="currentPage == 1">
       <template #right-icon>
         <van-switch v-model="isMatchModel" @click="loadData()" />
       </template>

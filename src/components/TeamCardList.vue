@@ -30,10 +30,6 @@ onMounted(async()=> {
   currentUser.value = await getCurrentUserService();
 })
 
-// const userCurrentId = ref(currentUser.userId);
-// const updateTeamDialog = (userCurrentId) => {
-//   console.log(userCurrentId);
-// }
 import 'vant/es/dialog/style'
 import {useRouter} from "vue-router";
 const joinTeamDialog = (teamId) =>{

@@ -4,13 +4,14 @@ import router from "../router/index.js";
 
 const isDev = process.env.NODE_ENV === "development";
 const instance = axios.create({
-    baseURL: isDev ?'http://localhost:8080/api' : '线上环境',
+    baseURL: isDev ?'http://localhost:8080/api' : 'http://1.12.233.238:8080/api',
     // withCredentials: true，允许 cookie 跨域
     withCredentials: true
 });
-let token = sessionStorage.getItem('token');
+let token = localStorage.getItem('token');
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
+    // console.log(token)
     console.log("我要发送请求啦。。。。",config)
     // 在发送请求之前做些什么
     if (token) {

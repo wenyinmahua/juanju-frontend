@@ -24,7 +24,7 @@ import {showFailToast, showSuccessToast} from "vant";
 
 const router = useRouter();
 
-const offset = ref({ x: 298, y: 560 });
+const offset = ref({ x: 30, y: 560 });
 const addTeam =  () => {
   router.push('/team/add');
 }

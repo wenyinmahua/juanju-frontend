@@ -13,6 +13,7 @@ const currentPage = ref(1);
 const pageSize = ref(5);
 const pageNum = ref(1);
 const total = ref(0);
+const skeletonLoading = ref(true);
 onMounted(async () => {
   const userListData = await request.get('/user/search/tags', {
     params: {
@@ -38,6 +39,7 @@ onMounted(async () => {
       }
     })
     userList.value = userListData;
+    skeletonLoading.value = false;
   }
 })
 
@@ -74,7 +76,7 @@ const change = async () =>{
 
 <template>
 
-  <user-card-list :user-list="userList"></user-card-list>
+  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading"></user-card-list>
   <van-empty v-if="!userList || userList.length < 1" image="search" description="搜索结果为空" />
   <van-back-top immediate />
   <van-pagination v-if="total > 5" v-model="currentPage" :total-items="total" :items-per-page="pageSize" @change="change" force-ellipses/>

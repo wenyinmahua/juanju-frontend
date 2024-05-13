@@ -1,20 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import request from "../plugins/myAxios.js";
+import {showFailToast} from "vant";
+import {getCurrentUserService} from "../api/user.js";
 const router = useRouter()
-const searchText = ref('');
-const onSearch = (val) =>{
-  tagList.value = originList.map(parentTag => {
-    const tempChildren = [...parentTag.children]
-    const tempParentTag = {...parentTag}
-    tempParentTag.children = tempChildren.filter(item => item.text.includes(searchText.value));
-    return tempParentTag;
-  })
-};
-const onCancel = () => {
-  searchText.value = '';
-  tagList.value = originList;
-};
+const route = useRoute();
+const editUser = ref({
+  editKey: route.query.editKey,
+  currentValue: route.query.currentValue,
+  editName: route.query.editName,
+})
+
 const tag = ref();
 const show = ref(true);
 const doClose = (tag) => {
@@ -23,7 +20,7 @@ const doClose = (tag) => {
   })
 };
 
-const activeIds = ref([]);
+const activeIds = ref(route.query.currentValue);
 const activeIndex = ref(0);
 //标签列表
 const originList = [
@@ -58,28 +55,33 @@ const originList = [
 ]
 const tagList = ref(originList)
 /**
- * 执行搜索
+ * 修改标签
  */
-const toSearchResult = () => {
-  router.push({
-    path: '/user/list',
-    query: {
-      tags: activeIds.value
-    }
+const loading = ref(false);
+const onSubmit = async(values) => {
+  const currentUser =await getCurrentUserService();
+  if(!currentUser){
+    showFailToast("用户未登录");
+    return;
+  }
+  const res = await request.post("/user/update",{
+    id:currentUser.id,
+    tags : JSON.stringify(values)
   })
-}
+  if(res.code === 0 && res.data > 0){
+    // showSuccessToast("查询成功")
+    loading.value = true;
+    setTimeout(()=>{
+      router.back();
+    },2000)
+
+  }else {
+    showFailToast("修改失败")
+  }
+};
 </script>
 
 <template>
-  <form action="/">
-    <van-search
-        v-model="searchText"
-        show-action
-        placeholder="请输入搜索的标签"
-        @search="onSearch"
-        @cancel="onCancel"
-    />
-  </form>
   <van-divider content-position="left">已选标签</van-divider>
   <div v-if="activeIds.length === 0">暂无选择</div>
   <van-space  style="padding: 0 16px" >
@@ -94,8 +96,15 @@ const toSearchResult = () => {
       :items="tagList"
   />
   <div style="padding: 12px">
-    <van-button block type="primary" @click="toSearchResult()" >搜索</van-button>
+    <van-button block type="primary" @click="onSubmit(activeIds)" >提交</van-button>
   </div>
+  <van-overlay :show="loading">
+    <div class="wrapper" @click.stop>
+      <div class="block">
+        <van-loading size="50px" vertical>保存中...</van-loading>
+      </div>
+    </div>
+  </van-overlay>
 </template>
 
 <style scoped>
