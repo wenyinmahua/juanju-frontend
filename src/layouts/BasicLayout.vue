@@ -6,10 +6,10 @@ import {ref} from "vue";
 import {routes} from "../router/index.js"
 // import { ref } from "vue";
 // const active = ref("index");
-const title = ref("伙伴匹配");
+const title = ref("匹配");
 // const onChange = (index) => showToast(`标签 ${index}`);
 const router = useRouter()
-const DEFAULT_TITLE = "伙伴匹配";
+const DEFAULT_TITLE = "匹配";
 
 router.beforeEach((to, from) => {
   const toPath = to.path;

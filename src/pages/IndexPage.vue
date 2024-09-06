@@ -68,7 +68,7 @@ const doMatch = async() =>{
     return response.data;
   }).catch(function (err){
     console.error('/user/match',err)
-    // showFailToast("请求失败");
+    showFailToast("请求失败，请确认你的标签不为空");
   })
   if(userListData){
     userListData.forEach(user =>{

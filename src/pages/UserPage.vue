@@ -81,7 +81,7 @@ const onOversize = (file) => {
   <template v-if="user">
     <div class="image">
       <van-uploader :v-model="fileList"  multiple :max-count="1" :after-read="afterRead" reupload :max-size="500 * 1024" @oversize="onOversize" >
-        <van-image height="6rem" width ="6rem" :src="user.avatarUrl ? user.avatarUrl: 'https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/c3149768-abd4-46d3-82d9-b804bac9105a.png'" round />
+        <van-image height="6rem" width ="6rem" :src="user.avatarUrl ? user.avatarUrl: 'https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/49e9401e-c6e0-4f38-bb18-588a750ebd4b.png'" round />
       </van-uploader>
     </div>
     <van-cell  is-link to="/user/update" icon="user-o">

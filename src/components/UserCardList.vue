@@ -17,7 +17,7 @@ const phone = ref();
 const showMessage = (username1,phone1) =>{
   show.value = true;
   username.value = username1;
-  phone.value = phone1;
+  phone.value = phone1 || '无联系方式';
 }
 </script>
 
@@ -38,7 +38,7 @@ const showMessage = (username1,phone1) =>{
     </template>
   </van-card>
     <van-dialog v-model:show="show"  :overlay=false>
-      <van-contact-card type="edit" :name="username" :tel="phone" :editable="false" />
+      <van-contact-card type="edit" :name="username" :tel="phone"  :editable="false" />
     </van-dialog>
   </van-skeleton>
 </template>

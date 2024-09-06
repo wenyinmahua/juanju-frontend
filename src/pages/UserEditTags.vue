@@ -20,17 +20,13 @@ const doClose = (tag) => {
   })
 };
 
-const activeIds = ref(route.query.currentValue);
+const activeIds = ref([]);
+if (editUser.value.currentValue !== null){
+  activeIds.value = editUser.value.currentValue;
+}
 const activeIndex = ref(0);
 //标签列表
 const originList = [
-  {
-    text: '性别',
-    children: [
-      { text: '男', id: '男' },
-      { text: '女', id: '女' },
-    ],
-  },
   {
     text: '技术',
     children: [
@@ -42,7 +38,13 @@ const originList = [
       { text: 'C++', id: 'C++' },
     ],
   },
-
+  {
+    text: '性别',
+    children: [
+      { text: '男', id: '男' },
+      { text: '女', id: '女' },
+    ],
+  },
   {
     text: '年级',
     children: [
@@ -83,21 +85,38 @@ const onSubmit = async(values) => {
 
 <template>
   <van-divider content-position="left">已选标签</van-divider>
-  <div v-if="activeIds.length === 0">暂无选择</div>
-  <van-space  style="padding: 0 16px" >
-  <van-tag color="#7232dd" v-for=" tag in activeIds"  closeable size="medium" type="primary" @close="doClose(tag)">
-    {{ tag }}
-  </van-tag>
-  </van-space>
+  <div v-if="activeIds=== null">暂无选择</div>
+
+  <div class="container">
+    <van-space
+        style="padding: 0 16px; max-width: 100%; overflow: auto; display: inline-block;"
+        v-for="tag in activeIds"
+        :key="tag"
+        :style="{ display: 'inline-block' }"
+
+    >
+      <van-tag
+          color="#7232dd"
+          closeable
+          size="medium"
+          type="primary"
+          @close="doClose(tag)"
+      >
+        {{ tag }}
+      </van-tag>
+    </van-space>
+  </div>
   <van-divider content-position="left">请选择标签</van-divider>
   <van-tree-select
       v-model:active-id="activeIds"
       v-model:main-active-index="activeIndex"
       :items="tagList"
   />
+
   <div style="padding: 12px">
     <van-button block type="primary" @click="onSubmit(activeIds)" >提交</van-button>
   </div>
+
   <van-overlay :show="loading">
     <div class="wrapper" @click.stop>
       <div class="block">
@@ -108,5 +127,22 @@ const onSubmit = async(values) => {
 </template>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
+.block {
+  width: 120px;
+  height: 100px;
+  padding-top: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.container {
+  width: 100%;
+  box-sizing: border-box;
+}
 </style>

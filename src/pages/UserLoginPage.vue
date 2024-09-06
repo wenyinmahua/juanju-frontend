@@ -87,7 +87,7 @@ const userRegister = async (UserRegister) => {
 <template >
   <div class="container" >
     <div style="text-align: center;">
-      <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/c3149768-abd4-46d3-82d9-b804bac9105a.png" width="200px" />
+      <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/49e9401e-c6e0-4f38-bb18-588a750ebd4b.png" width="200px" />
     </div>
     <van-form @submit="onSubmit" v-if="isRegister" :model="UserRegister">
       <h2 style="margin-left: 45%; color: #535bf2" >注册</h2>
@@ -138,7 +138,7 @@ const userRegister = async (UserRegister) => {
             v-model="UserRegister.userAccount"
             name="账号"
             label="账号"
-            placeholder="账号：mahua"
+            placeholder="请输入账号"
             :rules="[{ validator: validatorLoginAccount, required: true, message: '请填写账号' }]"
         />
 <!--        placeholder="账号或学号"-->
@@ -147,7 +147,7 @@ const userRegister = async (UserRegister) => {
             type="password"
             name="密码"
             label="密码"
-            placeholder="密码：123456789"
+            placeholder="请输入密码"
             :rules="[{ validator: validatorPassword, required: true, message: '请填写密码' }]"
         />
 <!--        placeholder="请填写密码"-->

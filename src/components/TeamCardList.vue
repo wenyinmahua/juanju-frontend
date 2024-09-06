@@ -19,7 +19,12 @@ const joinTeam = async (teamId:Number) =>{
   const result = await joinTeamService(teamId);
   if (result.code === 0){
     showNotify({ type: 'success', message:"加入队伍成功"});
-    window.location.reload();
+    const index = props.teamList.findIndex(t => t.id === teamId);
+    if (index !== -1) {
+      props.teamList[index].hasJoin = true;
+      props.teamList[index].hasJoinNum += 1;
+    }
+    // 重新获取队伍列表
   }else{
     showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
@@ -53,7 +58,6 @@ const updateTeam= (teamId:number) =>{
 import {deleteTeamService, quitTeamService} from '../api/team'
 const deleteTeam = async (id) =>{
   const result = await deleteTeamService(id);
-  window.location.reload();
   if (result.code === 0){
     showSuccessToast("删除队伍成功")
   }
@@ -62,6 +66,11 @@ const quitTeam = async(id) =>{
   const result = await quitTeamService(id);
   if (result?.code === 0){
     showSuccessToast("退出队伍成功");
+    const index = props.teamList.findIndex(t => t.id === id);
+    if (index !== -1) {
+      props.teamList[index].hasJoin = false;
+      props.teamList[index].hasJoinNum -= 1;
+    }
   }else {
     showFailToast("退出队伍失败")
   }
@@ -83,7 +92,6 @@ const quitTeamDialog = (teamId) =>{
         '是否退出该队伍？',
   }).then(() => {
     quitTeam(teamId);
-    window.location.reload();
       }
   ).catch(() => {});
 }
@@ -98,7 +106,11 @@ const joinEncryptTeam = async (teamPassword:string) =>{
   const result = await request.post('/team/join',{teamId:currentTeamId.value,teamPassword});
   if (result?.code === 0){
     showNotify({ type: 'success', message:"加入队伍成功"});
-    window.location.reload();
+    const index = props.teamList.findIndex(t => t.id === currentTeamId.value);
+    if (index !== -1) {
+      props.teamList[index].hasJoin = true;
+      props.teamList[index].hasJoinNum += 1;
+    }
   }else{
     showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
@@ -113,6 +125,7 @@ const joinEncryptTeam = async (teamPassword:string) =>{
       :desc="`简介：${team.description}`"
       :title="team.name"
       :thumb='team.avatarUrl'
+      :key="team.id"
   >
     <template #tags >
       <van-tag plain type="primary"  style="margin-right: 8px;margin-top: 8px;">
@@ -132,7 +145,6 @@ const joinEncryptTeam = async (teamPassword:string) =>{
       <van-button size="small" v-if="team.hasJoin " plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
       <van-button size="small" v-if="!team.hasJoin && team.status === 0" v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
       <van-button size="small" v-if="!team.hasJoin && team.status === 2" v-model="teamId" plain type="primary" @click="joinEncryptTeamDialog(team.id)">加入队伍</van-button>
-
     </template>
   </van-card>
   <van-dialog v-model:show="showPassDialog" title="加入队伍" show-cancel-button @confirm="joinEncryptTeam(teamPassword)">
