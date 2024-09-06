@@ -6,6 +6,16 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
+基于 Vue + Vant4 开发的卷聚匹配系统前端
+
+通过以下指令下载需要的依赖之后
+
+```shell
+npm install
+```
+
+启动即可
+
 开发者测试
 node.js版本:16.20.0、17.9.1、20.10.0均可使用
 低版本可能会报错
