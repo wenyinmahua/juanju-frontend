@@ -3,12 +3,12 @@ import {UserType} from "../models/user";
 import {ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
 import request from '../plugins/myAxios.js'
-import {log} from "node:util";
 
 interface UserCardListProps{
   skeletonLoading: boolean;
   userList: UserType[];
   total: number;
+  allowLoad: boolean;
 }
 
 const show = ref(false)
@@ -16,6 +16,7 @@ const props = withDefaults( defineProps<UserCardListProps>(),{
       skeletonLoading : true,
       //@ts-ignore
       userList : [] as UserType[],
+      allowLoad: false,
 });
 const username = ref();
 const phone = ref();
@@ -28,6 +29,10 @@ const loading = ref(false);
 const finished = ref(false);
 const pageNum = ref(0);
 const onLoad = async () => {
+  if (props.allowLoad === false){
+    finished.value = true;
+    return;
+  }
   setTimeout(async () => {
     loading.value = false;
     const userListData = await request.get('/user/recommend', {
@@ -57,7 +62,6 @@ const onLoad = async () => {
   <van-list
       v-model:loading="loading"
       :finished="finished"
-      finished-text="没有更多了"
       @load="onLoad"
   >
     <van-skeleton title avatar :row="3" :loading="props.skeletonLoading" v-for="user in props.userList" avatar-shape="square" avatar-size="88px">

@@ -8,12 +8,14 @@ const pageSize = ref(8);
 const total = ref(1);
 const currentPage = ref(1);
 const skeletonLoading = ref(false);
+const allowLoad = ref(true);
 onMounted(async () => {
   // setCurrentUserState(JSON.parse(localStorage.getItem("JuanJuUserLoginStatus")));
   await change()
   skeletonLoading.value = false;
 })
 const change = async () =>{
+  allowLoad.value = true;
   const userListData = await request.get('/user/recommend', {
     params: {
       pageSize : pageSize.value,
@@ -55,6 +57,7 @@ type ModeType = 'default' | 'match';
 const mode = ref<ModeType>("default");
 const isMatchModel = ref(<boolean>false);
 const doMatch = async() =>{
+  allowLoad.value = false;
   mode.value = "match";
   const num = 10;
   const userListData = await request.get('/user/match', {
@@ -111,7 +114,7 @@ const loadData = async () =>{
         <van-switch v-model="isMatchModel" @click="loadData()" />
       </template>
     </van-cell>
-  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading" :total="total"></user-card-list>
+  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading" :total="total" :allow-load="allowLoad"></user-card-list>
   <van-empty v-if="!userList || userList.length < 1" image="search" description="数据为空" />
   <van-back-top immediate />
 

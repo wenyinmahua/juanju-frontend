@@ -52,6 +52,7 @@ onMounted(async()=> {
     showFailToast(result?.message)
   }
 })
+const show = ref(false);
 const logout = async() =>{
   await request.post('/user/logout');
   window.localStorage.removeItem("token")
