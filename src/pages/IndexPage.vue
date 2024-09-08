@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
 import request from '../plugins/myAxios.js'
 import {showFailToast, showSuccessToast, showToast} from "vant";
@@ -8,7 +7,6 @@ const userList = ref([]);
 const pageSize = ref(8);
 const total = ref(1);
 const currentPage = ref(1);
-// import {setCurrentUserState} from "../store/user.js";
 const skeletonLoading = ref(false);
 onMounted(async () => {
   // setCurrentUserState(JSON.parse(localStorage.getItem("JuanJuUserLoginStatus")));
@@ -22,8 +20,10 @@ const change = async () =>{
       pageNum: currentPage.value,
     },
   }).then(function (response){
-    showSuccessToast("请求成功");
+    // showSuccessToast("请求成功");
     total.value = response.data.total ;
+    console.log(total.value)
+    console.log(111)
     return response.data.records;
   }).catch(function (err){
     showFailToast("请求失败");
@@ -96,10 +96,14 @@ const loadData = async () =>{
 <template>
   <van-pull-refresh v-model="loading" @refresh="onRefresh" >
   <van-swipe v-if="currentPage == 1" class="my-swipe" :autoplay="3000" indicator-color="white">
-    <van-swipe-item>广告预留区</van-swipe-item>
-    <van-swipe-item>通知预留区1</van-swipe-item>
-    <van-swipe-item>通知预留区2</van-swipe-item>
-    <van-swipe-item>通知预留区3</van-swipe-item>
+    <van-swipe-item>
+      <div>
+        <a href="http://139.199.168.219:81/"  target="_blank">
+            聚友阁管理端
+        </a>
+      </div>
+    </van-swipe-item>
+    <van-swipe-item>欢迎使用聚友阁</van-swipe-item>
   </van-swipe>
 
     <van-cell center title="匹配模式（24小时更新一次）" v-if="currentPage == 1">
@@ -107,11 +111,10 @@ const loadData = async () =>{
         <van-switch v-model="isMatchModel" @click="loadData()" />
       </template>
     </van-cell>
-  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading"></user-card-list>
+  <user-card-list :user-list="userList" :skeleton-loading="skeletonLoading" :total="total"></user-card-list>
   <van-empty v-if="!userList || userList.length < 1" image="search" description="数据为空" />
   <van-back-top immediate />
 
-  <van-pagination v-model="currentPage" v-if="total > 8" :total-items="total" :items-per-page="pageSize" @change="change" force-ellipses/>
 
   </van-pull-refresh>
   <div style="height: 60px;"></div>

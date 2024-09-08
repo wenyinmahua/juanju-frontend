@@ -24,7 +24,6 @@ import {showFailToast, showSuccessToast} from "vant";
 
 const router = useRouter();
 
-const offset = ref({ x: 30, y: 560 });
 const addTeam =  () => {
   router.push('/team/add');
 }
@@ -67,7 +66,7 @@ const change = async () =>{
       pageNum: currentPage.value,
     },
   }).then(function (response){
-    showSuccessToast("请求成功");
+    // showSuccessToast("请求成功");
     total.value = response.data.total ;
     return response.data.records;
   }).catch(function (err){

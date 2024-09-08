@@ -93,8 +93,11 @@ const onOversize = (file) => {
     <van-cell title="我加入的队伍" is-link to="/user/team/join" icon="friends-o"/>
   </template>
   <div style="margin: 16px">
-    <van-button  block @click="logout" type="primary" icon="contact-o">退出登录</van-button>
+    <van-button  block @click="show = true" type="primary" icon="contact-o">退出登录</van-button>
   </div>
+
+  <van-dialog v-model:show="show" title="确定退出登录" @confirm="logout" show-cancel-button>
+  </van-dialog>
 
 </div>
 </template>

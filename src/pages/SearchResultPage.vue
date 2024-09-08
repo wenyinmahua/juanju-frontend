@@ -54,7 +54,7 @@ const change = async () =>{
       return qs.stringify(params,{indices: false})
     }
   }).then(function (response){
-    showSuccessToast("请求成功");
+    // showSuccessToast("请求成功");
     return response.data.records;
   }).catch(function (err){
     showFailToast("请求失败");
