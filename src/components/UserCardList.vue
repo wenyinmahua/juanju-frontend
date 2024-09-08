@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {UserType} from "../models/user";
 import {ref} from "vue";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast} from "vant";
 import request from '../plugins/myAxios.js'
+import router from "../router";
 
 interface UserCardListProps{
   skeletonLoading: boolean;
@@ -20,11 +21,6 @@ const props = withDefaults( defineProps<UserCardListProps>(),{
 });
 const username = ref();
 const phone = ref();
-const showMessage = (username1,phone1) =>{
-  show.value = true;
-  username.value = username1;
-  phone.value = phone1 || '无联系方式';
-}
 const loading = ref(false);
 const finished = ref(false);
 const pageNum = ref(0);
@@ -56,6 +52,10 @@ const onLoad = async () => {
       })
     }
   },1000)};
+
+const getUserInfo = (userAccount: string) =>{
+  router.push("/user/info"+"?userAccount="+userAccount);
+}
 </script>
 
 <template>
@@ -76,7 +76,7 @@ const onLoad = async () => {
           </van-tag>
         </template>
         <template #footer>
-          <van-button size="mini" @click="showMessage(user.username,user.phone)">查看联系方式</van-button>
+          <van-button size="mini" @click="getUserInfo(user.userAccount)">查看更多</van-button>
         </template>
       </van-card>
       <van-dialog v-model:show="show"  :overlay=false>

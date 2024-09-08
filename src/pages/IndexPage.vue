@@ -97,17 +97,23 @@ const loadData = async () =>{
 
 
 <template>
+  <van-notice-bar color="#1989fa" background="#ecf9ff" left-icon="info-o">
+    <a href="http://139.199.168.219:81/" target="_blank">点此访问用户中心</a>
+  </van-notice-bar>
+  <div>
+    <van-swipe v-if="currentPage == 1" class="my-swipe" :autoplay="3000" indicator-color="white">
+      <van-swipe-item>
+        <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/img/Snipaste_2024-09-08_19-41-48.png"/>
+      </van-swipe-item>
+      <van-swipe-item>
+        <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/img/image-20240908203236354.png"/>
+      </van-swipe-item>
+      <van-swipe-item>
+        <van-image src="https://web-tlias-mmh.oss-cn-beijing.aliyuncs.com/img/image-20240908195208394.png"/>
+      </van-swipe-item>
+    </van-swipe>
+  </div>
   <van-pull-refresh v-model="loading" @refresh="onRefresh" >
-  <van-swipe v-if="currentPage == 1" class="my-swipe" :autoplay="3000" indicator-color="white">
-    <van-swipe-item>
-      <div>
-        <a href="http://139.199.168.219:81/"  target="_blank">
-            聚友阁管理端
-        </a>
-      </div>
-    </van-swipe-item>
-    <van-swipe-item>欢迎使用聚友阁</van-swipe-item>
-  </van-swipe>
 
     <van-cell center title="匹配模式（24小时更新一次）" v-if="currentPage == 1">
       <template #right-icon>
@@ -125,11 +131,10 @@ const loadData = async () =>{
 </template>
 
 <style scoped>
-.my-swipe .van-swipe-item {
-  color: #fff;
-  font-size: 20px;
-  line-height: 100px;
-  text-align: center;
-  background-color: #39a9ed;
+.van-swipe {
+  margin: 0px 5px;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 </style>

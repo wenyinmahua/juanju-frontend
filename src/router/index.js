@@ -17,6 +17,8 @@ import UserTeamJoinPage from "../pages/UserTeamJoinPage.vue";
 import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
 import UserEditPasswordPage from "../pages/UserEditPasswordPage.vue";
 import EditTags from "../pages/UserEditTags.vue";
+import UserInfo from "../pages/UserInfoPage.vue";
+import TeamInfoPage from "../pages/TeamInfoPage.vue";
 
 
 //3. 定义路由关系，由一个数组确定
@@ -33,12 +35,14 @@ export const routes = [
         {path: '/user/list', component: SearchResultPage},
         {path: '/team/add',title:"创建队伍", component: TeamAddPage },
         {path: '/team/update',title:"更新队伍", component: TeamUpdatePage},
+        {path: '/team/info', title: '队伍详情',component: TeamInfoPage},
         {path: '/user/editGender',title:"更新个人信息", component: UserEditGenderPage},
         {path: '/user/update',title:"更新个人信息", component: UserUpdatePage},
         {path: '/user/team/join', title:"我加入的队伍",component: UserTeamJoinPage},
         {path: '/user/team/create', title:"我创建的队伍", component: UserTeamCreatePage},
         {path: '/user/update/password', title: "更新密码", component: UserEditPasswordPage},
-        {path: '/user/editTags', title: '更新个人标签',component: EditTags}
+        {path: '/user/editTags', title: '更新个人标签',component: EditTags},
+        {path: '/user/info', title: '用户详情',component: UserInfo}
     ]
     },
 ]

@@ -30,8 +30,6 @@ import request from "../plugins/myAxios.js";
 import {onMounted, ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
 import { setCurrentUserState} from '../store/user'
-import {isImageFile} from "vant/es/uploader/utils";
-import myAxios from "../plugins/myAxios.js";
 import router from "../router";
 const fileList = ref([]);
 onMounted(async()=> {
@@ -110,7 +108,7 @@ const onOversize = (file) => {
 }
 .image{
   padding: 20px;
-  background-image: radial-gradient(circle, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+  background-image: radial-gradient(circle, #dfdfdf, #e5e5e5, #ebebeb, #f1f1f1, #f7f7f7, #fafafa, #fcfcfc, #ffffff, #ffffff, #ffffff, #ffffff, #ffffff);
   text-align: center;
 }
 </style>

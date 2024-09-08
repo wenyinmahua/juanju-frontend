@@ -80,7 +80,7 @@ const onClickRight = () => {
 <!--  <van-tabbar v-model="active" @change="onChange" route>-->
   <van-tabbar  @change="onChange" route>
     <van-tabbar-item icon="home-o" to="/" name="index">主页</van-tabbar-item>
-    <van-tabbar-item icon="friends-o" to="/team" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item icon="flag-o" to="/team" name="team">队伍</van-tabbar-item>
     <van-tabbar-item icon="contact-o" to="/user" name="user">个人</van-tabbar-item>
   </van-tabbar>
 </template>
