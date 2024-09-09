@@ -3,7 +3,8 @@
 import {useRoute} from "vue-router";
 
 const team = ref({
-  id:'',
+  id: -1,
+  userId:-1,
   name: '',
   maxNum:0,
   createUser:'',
@@ -97,6 +98,32 @@ const joinTeam = async (teamId:Number) =>{
     showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
 }
+const updateTeam= (teamId:number) =>{
+  router.push({
+        path: "/team/update",
+        query: {teamId},
+      }
+  );
+}
+
+import {deleteTeamService} from '../api/team'
+const deleteTeam = async (id) =>{
+  const result = await deleteTeamService(id);
+  if (result.code === 0){
+    showSuccessToast("删除队伍成功")
+  }
+}
+
+const deleteTeamDialog = (teamId) =>{
+  showConfirmDialog({
+    message:
+        '是否解散该队伍？',
+  }).then(() => {
+        deleteTeam(teamId);
+      }
+  ).catch(() => {});
+}
+
 
 </script>
 
@@ -131,17 +158,16 @@ const joinTeam = async (teamId:Number) =>{
       <van-cell title="到期时间" :value="team.expireTime.toLocaleString()" icon="envelop-o" />
       <van-cell title="创建时间" :value="team.createTime.toLocaleString()" icon="envelop-o" />
 
-
     </template>
     <van-button v-if="!team.hasJoin" type="primary" block  @click="joinTeamDialog(team.id)" >加入队伍</van-button>
     <van-button v-if="team.hasJoin" type="warning" block @click="quitTeamDialog(team.id)">退出队伍</van-button>
     <van-dialog v-model:show="showPassDialog" title="加入队伍" show-cancel-button @confirm="joinEncryptTeam(teamPassword)">
       <van-field v-model="teamPassword" label="密码：" type="password" placeholder="请输入密码"></van-field>
     </van-dialog>
-          <van-button v-if="currentUser?.id === team.createUser" plain type="success" @click="updateTeam(team.id)">更新队伍</van-button>
-          <van-button size="small" v-if="currentUser?.id === team.createUser" plain type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
-<!--          <van-button size="small" v-if="!team.hasJoin && team.status === 0" v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>-->
-<!--          <van-button size="small" v-if="!team.hasJoin && team.status === 2" v-model="teamId" plain type="primary" @click="joinEncryptTeamDialog(team.id)">加入队伍</van-button>-->
+    <van-button v-if="currentUser?.id === team.userId" block type="success" @click="updateTeam(team.id)">更新队伍</van-button>
+    <van-button v-if="currentUser?.id === team.userId" block type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
+  </div>
+  <div style="height: 80px">
 
   </div>
 </template>
