@@ -12,11 +12,13 @@ const user = ref({
   major:'',
   profile: '',
   stuId:'',
+  tags:[],
   avatarUrl: null,
 });
 import request from "../plugins/myAxios.js";
 import {onMounted, ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
+import {stringify} from "qs";
 const route = useRoute();
 const fileList = ref([]);
 onMounted(async()=> {
@@ -28,6 +30,12 @@ onMounted(async()=> {
   })
   if(result?.code === 0){
     user.value = result.data;
+    if(user.value.tags) {
+      user.value.tags = JSON.parse(user.value.tags)
+      console.log(user.value.tags)
+    }else {
+      user.value.tags={0:'暂无标签'};
+    }
     fileList.value = result.data.avatarUrl;
     if (user.value.gender === 0){
       user.value.gender = '男'
@@ -63,6 +71,11 @@ onMounted(async()=> {
       <van-cell title="昵称" :value="user.username ? user.username : '该用户很懒，未填写'" icon="contact-o" />
       <van-cell title="账号" :value="user.userAccount" icon="manager-o" />
       <van-cell title="简介" :value="user.profile ? user.profile : '该用户暂未填写简介'" icon="notes-o" />
+      <van-cell title="标签" icon="notes-o" >
+        <van-tag color="#7232dd"  v-for="tag in  user.tags" style="margin-right: 8px;margin-top: 8px;">
+          {{tag}}
+        </van-tag>
+      </van-cell>
       <van-cell title="联系方式" :value="user.phone  ? user.phone : '该用户暂未填写手机号'" icon="phone-o" />
       <van-cell title="邮箱" :value="user.email  ? user.email : '该用户暂未填写邮箱'" icon="envelop-o" />
     </template>

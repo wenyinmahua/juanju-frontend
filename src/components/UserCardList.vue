@@ -88,5 +88,10 @@ const getUserInfo = (userAccount: string) =>{
 </template>
 
 <style scoped>
-
+.van-card{
+  margin: 5px 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
 </style>

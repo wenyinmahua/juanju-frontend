@@ -29,11 +29,6 @@ const joinTeam = async (teamId:Number) =>{
     showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
 }
-const currentUser = ref();
-import {getCurrentUserService} from '../api/user'
-onMounted(async()=> {
-  currentUser.value = await getCurrentUserService();
-})
 
 import 'vant/es/dialog/style'
 import {useRouter} from "vue-router";
@@ -55,24 +50,11 @@ const updateTeam= (teamId:number) =>{
       }
   );
 }
-import {deleteTeamService, quitTeamService} from '../api/team'
+import {deleteTeamService} from '../api/team'
 const deleteTeam = async (id) =>{
   const result = await deleteTeamService(id);
   if (result.code === 0){
     showSuccessToast("删除队伍成功")
-  }
-}
-const quitTeam = async(id) =>{
-  const result = await quitTeamService(id);
-  if (result?.code === 0){
-    showSuccessToast("退出队伍成功");
-    const index = props.teamList.findIndex(t => t.id === id);
-    if (index !== -1) {
-      props.teamList[index].hasJoin = false;
-      props.teamList[index].hasJoinNum -= 1;
-    }
-  }else {
-    showFailToast("退出队伍失败")
   }
 }
 
@@ -86,15 +68,7 @@ const deleteTeamDialog = (teamId) =>{
   ).catch(() => {});
 }
 
-const quitTeamDialog = (teamId) =>{
-  showConfirmDialog({
-    message:
-        '是否退出该队伍？',
-  }).then(() => {
-    quitTeam(teamId);
-      }
-  ).catch(() => {});
-}
+
 const showPassDialog = ref(false);
 const teamPassword = ref('');
 const currentTeamId = ref();
@@ -114,6 +88,10 @@ const joinEncryptTeam = async (teamPassword:string) =>{
   }else{
     showNotify({ type: 'warning', message:( (result?.description) ?`${result?.description}`:'')});
   }
+}
+const route = useRouter();
+const getTeamInfo = (id:number)=>{
+  route.push("/team/info?id="+id);
 }
 
 </script>
@@ -140,11 +118,9 @@ const joinEncryptTeam = async (teamPassword:string) =>{
       <div style="color: #ff0000">{{'已加入队伍人数:' + team.hasJoinNum + "/"+team.maxNum}}</div>
     </template>
     <template #footer>
-      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="success" @click="updateTeam(team.id)">更新队伍</van-button>
-      <van-button size="small" v-if="currentUser?.id === team.userId" plain type="danger" @click="deleteTeamDialog(team.id)">解散队伍</van-button>
-      <van-button size="small" v-if="team.hasJoin " plain type="warning" @click="quitTeamDialog(team.id)">退出队伍</van-button>
-      <van-button size="small" v-if="!team.hasJoin && team.status === 0" v-model="teamId" plain type="primary" @click="joinTeamDialog(team.id)">加入队伍</van-button>
-      <van-button size="small" v-if="!team.hasJoin && team.status === 2" v-model="teamId" plain type="primary" @click="joinEncryptTeamDialog(team.id)">加入队伍</van-button>
+
+      <van-button size="small" v-model="teamId" plain type="primary" @click="getTeamInfo(team.id)">查看队伍</van-button>
+
     </template>
   </van-card>
   <van-dialog v-model:show="showPassDialog" title="加入队伍" show-cancel-button @confirm="joinEncryptTeam(teamPassword)">
@@ -153,4 +129,10 @@ const joinEncryptTeam = async (teamPassword:string) =>{
 </template>
 
 <style scoped>
+.van-card{
+  margin: 5px 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
 </style>
