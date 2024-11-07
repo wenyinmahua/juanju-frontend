@@ -27,7 +27,7 @@ export const routes = [
     {path: '/login', component: UserLoginPage},
     {path:'/index',component: BasicLayout, redirect: '/',
     children:[
-        {path: '/',title:"伙伴匹配",component : Index},
+        {path: '/',title:"聚友阁",component : Index},
         {path: '/team',title:"找队伍",component: TeamPage},
         {path: '/user', title:"个人中心", component: UserPage},
         {path: '/search', title:"找队友", component: Search},

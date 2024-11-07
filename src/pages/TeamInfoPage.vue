@@ -28,6 +28,7 @@ onMounted(async()=> {
       id: id.value,
     }
   })
+  console.log(team.value)
   team.value = result.data;
 })
 const currentUser = ref();
@@ -155,7 +156,7 @@ const deleteTeamDialog = (teamId) =>{
           {{team.category}}
         </van-tag>
       </van-cell>
-      <van-cell title="到期时间" :value="team.expireTime.toLocaleString()" icon="envelop-o" />
+      <van-cell v-if="team.expireTime !==null " title="到期时间" :value="team.expireTime.toLocaleString()" icon="envelop-o" />
       <van-cell title="创建时间" :value="team.createTime.toLocaleString()" icon="envelop-o" />
 
     </template>
